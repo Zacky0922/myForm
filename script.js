@@ -128,7 +128,6 @@ function regist() {
     "https://script.google.com/macros/s/AKfycbwauCquwHoxmbnmHa7dkvLvSRDKHYylHD5EllOVW25f7YO3z-qPkoRJ999cN9xUx1Vm/exec" +
     "?id=1-DAni0Hnh_K94teeFW3OhSeD0b6jNeHObQvSvcp-e0A" +
     "&name=販売情報";
-
   let areaIds = ["customerArea", "deliveryArea", "merchandise", "manager"];
   let query = "";
   let q = 1;
@@ -147,8 +146,6 @@ function regist() {
       q++;
     }
   }
-  let url = encodeURI(GAS + query);
-  console.log(url);
-  fetch(encodeURI(url));
+  fetch(encodeURI(GAS + query));
   alert("登録完了");
 }
