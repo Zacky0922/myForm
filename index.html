@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>フォームサンプル</title>
+    <script src="./script.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", (e) => {
+        // 初期化
+        init();
+
+        // 各種イベント設定
+        // 郵便番号から住所取得
+        document.getElementById("customerPostalcode")
+        .addEventListener("keyup",e=>{
+            getAddress(e);
+        })
+        // 顧客情報→お届け先のコピー作成
+        document
+          .getElementById("copyCustomer2delivery")
+          .addEventListener("click", (e) => {
+            copyCustomer2delivery();
+          });
+        // 商品情報
+        document
+          .getElementById("merchandiseVendor")
+          .addEventListener("change", (e) => {
+            setLot(e.target.value);
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <form>
+      <fieldset>
+        <legend>顧客情報</legend>
+        <div id="customerArea">
+          <label>氏名</label>
+          <input type="text" id="customerName" size="10" />
+          <br />
+          <label>ふりがな</label>
+          <input type="text" id="customerFurigana" size="10" />
+          <br />
+          <label>電話番号（携帯）</label>
+          <input type="tel" id="customerMob" size="15" /><br />
+          <label>電話番号（自宅）</label>
+          <input type="tel" id="customerTel" size="15" /><br />
+          <label for="">郵便番号</label>
+          <input type="number" id="customerPostalcode" /><br />
+          <label for="">住所１</label>
+          <input
+            type="text"
+            id="customerAddress1"
+            placeholder="都道府県"
+          /><br />
+          <label for="">住所２</label>
+          <input
+            type="text"
+            id="customerAddress2"
+            placeholder="市区町村"
+          /><br />
+          <label for="">住所３</label>
+          <input
+            type="text"
+            id="customerAddress3"
+            placeholder="地名・番地"
+          /><br />
+          <label for="">住所４</label>
+          <input
+            type="text"
+            id="customerAddress4"
+            placeholder="マンション名・部屋番号"
+          />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>お届け先</legend>
+        <div>
+          <input
+            type="button"
+            value="顧客情報をコピーする"
+            id="copyCustomer2delivery"
+          />
+        </div>
+        <div id="deliveryArea">
+          <label>氏名</label>
+          <input type="text" id="deliveryName" size="10" />
+          <br />
+          <label>ふりがな</label>
+          <input type="text" id="deliveryFurigana" size="10" />
+          <br />
+          <label>電話番号（携帯）</label>
+          <input type="tel" id="deliveryMob" size="15" /><br />
+          <label>電話番号（自宅）</label>
+          <input type="tel" id="deliveryTel" size="15" /><br />
+          <label for="">郵便番号</label>
+          <input type="number" id="deliveryPostalcode" /><br />
+          <label for="">住所１</label>
+          <input
+            type="text"
+            id="deliveryAddress1"
+            placeholder="都道府県"
+          /><br />
+          <label for="">住所２</label>
+          <input
+            type="text"
+            id="deliveryAddress2"
+            placeholder="市区町村"
+          /><br />
+          <label for="">住所３</label>
+          <input
+            type="text"
+            id="deliveryAddress3"
+            placeholder="地名・番地"
+          /><br />
+          <label for="">住所４</label>
+          <input
+            type="text"
+            id="deliveryAddress4"
+            placeholder="マンション名・部屋番号"
+          />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>商品情報</legend>
+        <div id="merchandise">
+          <label>メーカー</label>
+          <select name="" id="merchandiseVendor">
+            <option value="メーカーA">メーカーA</option>
+            <option value="メーカーB">メーカーB</option>
+            <option value="メーカーC">メーカーC</option></select
+          ><br />
+          <label>型番</label>
+          <select name="" id="merchandiseLot">
+            <option value="製品A">A1</option>
+            </select
+          ><br />
+          <label>メーカー価格</label>
+          <input type="number" name="" id="merchandiseVendorPrice" /><br />
+          <label>数量(1-100)</label>
+          <input
+            type="number"
+            name="merchandiseQuantity"
+            id=""
+            min="1"
+            max="100"
+            step="1"
+            value="1"
+          /><br />
+          <label>単価</label>
+          <input type="number" name="" id="merchandiseSellingPrice" /><br />
+          <label>優待価格</label>
+          <input type="number" name="" id="merchandiseSpecialPrice" /><br />
+          <label>お買い上げ日</label>
+          <input
+            type="date"
+            class="setToday"
+            name=""
+            id="merchandiseDate"
+          /><br />
+          <label>運賃</label>
+          <input type="number" name="" id="merchandiseFare" /><br />
+          <label>その他費用</label>
+          <input type="number" name="" id="merchandiseOtherCost" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>担当情報</legend>
+        <div>
+          <label for="">担当者</label>
+          <input type="text" /><br />
+          <label for="">販売員</label>
+          <input type="text" /><br />
+          <label for="">申し送り事項</label><br />
+          <textarea name="" id="" cols="30" rows="10"></textarea>
+        </div>
+      </fieldset>
+    </form>
+  </body>
+</html>
