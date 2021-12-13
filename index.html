@@ -10,25 +10,6 @@
       window.addEventListener("DOMContentLoaded", (e) => {
         // 初期化
         init();
-
-        // 各種イベント設定
-        // 郵便番号から住所取得
-        document.getElementById("customerPostalcode")
-        .addEventListener("keyup",e=>{
-            getAddress(e);
-        })
-        // 顧客情報→お届け先のコピー作成
-        document
-          .getElementById("copyCustomer2delivery")
-          .addEventListener("change", (e) => {
-            copyCustomer2delivery();
-          });
-        // 商品情報
-        document
-          .getElementById("merchandiseVendor")
-          .addEventListener("change", (e) => {
-            setLot(e.target.value);
-          });
       });
     </script>
   </head>
@@ -169,7 +150,7 @@
       </fieldset>
       <fieldset>
         <legend>担当情報</legend>
-        <div>
+        <div id="manager">
           <label for="">担当者</label>
           <input type="text" /><br />
           <label for="">販売員</label>
@@ -178,6 +159,7 @@
           <textarea name="" id="" cols="30" rows="10"></textarea>
         </div>
       </fieldset>
+      <input type="button" value="登録" id="regist">
     </form>
   </body>
 </html>

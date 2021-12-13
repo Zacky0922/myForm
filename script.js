@@ -40,6 +40,30 @@ function init() {
   for (let i = 0; i < ele.length; i++) {
     ele[i].setAttribute("value", today);
   }
+
+  // 各種イベント設定
+  // 郵便番号から住所取得
+  document
+    .getElementById("customerPostalcode")
+    .addEventListener("keyup", (e) => {
+      getAddress(e);
+    });
+  // 顧客情報→お届け先のコピー作成
+  document
+    .getElementById("copyCustomer2delivery")
+    .addEventListener("click", (e) => {
+      copyCustomer2delivery();
+    });
+  // 商品情報
+  document
+    .getElementById("merchandiseVendor")
+    .addEventListener("change", (e) => {
+      setLot(e.target.value);
+    });
+  // 登録
+  document.getElementById("regist").addEventListener("click", (e) => {
+    regist();
+  });
 }
 
 function changeVendor(e) {
@@ -96,4 +120,35 @@ function getAddress(e) {
       document.getElementById("customerAddress3").value =
         json.results[0].address3;
     });
+}
+
+// スプシ書き込み
+function regist() {
+  let GAS =
+    "https://script.google.com/macros/s/AKfycbwauCquwHoxmbnmHa7dkvLvSRDKHYylHD5EllOVW25f7YO3z-qPkoRJ999cN9xUx1Vm/exec" +
+    "?id=1-DAni0Hnh_K94teeFW3OhSeD0b6jNeHObQvSvcp-e0A" +
+    "&name=販売情報";
+
+  let areaIds = ["customerArea", "deliveryArea", "merchandise", "manager"];
+  let query = "";
+  let q = 1;
+  for (let i = 0; i < areaIds.length; i++) {
+    if (i == 2) {
+      query +=
+        "&col" + q + "=" + document.getElementById("merchandiseVendor").value;
+      q++;
+      query +=
+        "&col" + q + "=" + document.getElementById("merchandiseLot").value;
+      q++;
+    }
+    let ele = document.getElementById(areaIds[i]).getElementsByTagName("input");
+    for (let j = 0; j < ele.length; j++) {
+      query += "&col" + q + "=" + ele[j].value;
+      q++;
+    }
+  }
+  let url = encodeURI(GAS + query);
+  console.log(url);
+  fetch(encodeURI(url));
+  alert("登録完了");
 }
