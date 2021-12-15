@@ -1,35 +1,41 @@
-const MST = {
-  メーカーA: [
-    {
-      name: "A1",
-      price: 100000,
-    },
-    {
-      name: "A2",
-      price: 110000,
-    },
-  ],
-  メーカーB: [
-    {
-      name: "B1",
-      price: 200000,
-    },
-    {
-      name: "B2",
-      price: 210000,
-    },
-  ],
-  メーカーC: [
-    {
-      name: "C1",
-      price: 300000,
-    },
-    {
-      name: "C2",
-      price: 310000,
-    },
-  ],
-};
+const MST = [
+  {
+    id: "A1",
+    vendor: "メーカーA",
+    lot: "A1",
+    price: 100000,
+  },
+  {
+    id: "A2",
+    vendor: "メーカーA",
+    lot: "A2",
+    price: 110000,
+  },
+  {
+    id: "B1",
+    vendor: "メーカーB",
+    lot: "B1",
+    price: 200000,
+  },
+  {
+    id: "B2",
+    vendor: "メーカーB",
+    lot: "B2",
+    price: 210000,
+  },
+  {
+    id: "C1",
+    vendor: "メーカーC",
+    lot: "C1",
+    price: 300000,
+  },
+  {
+    id: "C2",
+    vendor: "メーカーC",
+    lot: "C2",
+    price: 310000,
+  },
+];
 
 function init() {
   // 本日の日付を設定
@@ -41,12 +47,57 @@ function init() {
     ele[i].setAttribute("value", today);
   }
 
+  // メーカー初期設定
+  let vendors = [];
+  for (let i in MST) {
+    if (!vendors.includes(MST[i].vendor)) {
+      vendors[vendors.length] = MST[i].vendor;
+      let opt = document.createElement("option");
+      opt.value = MST[i].vendor;
+      opt.innerHTML = MST[i].vendor;
+      document.getElementById("merchandiseVendor").appendChild(opt);
+    }
+  }
+
+  // ;
+
+  // URLクエリ取得
+  let URLquery = location.search.replace("?", "");
+  URLquery = URLquery.split("&");
+  let query = {};
+  for (let i = 0; i < URLquery.length; i++) {
+    let q = URLquery[i].split("=");
+    query[q[0]] = q[1];
+  }
+  // 製品idがあればそれを設定
+  if (query.id !== undefined) {
+    // alert(query.id);
+    for (let i = 0; i < MST.length; i++) {
+      if (query.id === MST[i].id) {
+        // vendor設定
+        document.getElementById("merchandiseVendor").value = MST[i].vendor;
+        // 型番設定
+        setLot(MST[i].vendor,MST[i].lot);
+        break;
+      }
+    }
+  }
+  // なければとりあえず初期メーカーリスト
+  else {
+    setLot(document.getElementById("merchandiseVendor").value);
+  }
+
   // 各種イベント設定
   // 郵便番号から住所取得
   document
     .getElementById("customerPostalcode")
     .addEventListener("keyup", (e) => {
-      getAddress(e);
+      getAddress(e, "customer");
+    });
+  document
+    .getElementById("deliveryPostalcode")
+    .addEventListener("keyup", (e) => {
+      getAddress(e, "delivery");
     });
   // 顧客情報→お届け先のコピー作成
   document
@@ -83,20 +134,28 @@ function copyCustomer2delivery() {
   }
 }
 
-function setLot(val) {
+function setLot(val,defalt = false) {
   document.getElementById("merchandiseLot").innerHTML = "";
-  for (let i = 0; i < MST[val].length; i++) {
-    let opt = document.createElement("option");
-    opt.value = MST[val][i].name;
-    opt.innerHTML = MST[val][i].name;
-    document.getElementById("merchandiseLot").appendChild(opt);
+  let flag = false;
+  for (let i = 0; i < MST.length; i++) {
+    if (MST[i].vendor === val) {
+      let opt = document.createElement("option");
+      opt.value = MST[i].lot;
+      opt.innerHTML = MST[i].lot;
+      if (MST[i].lot === defalt) {
+        opt.selected = true;
+      }
+      document.getElementById("merchandiseLot").appendChild(opt);
+    }
+    if (flag) {
+      setPrice(MST[i].lot);
+    }
   }
-  setPrice(MST[val][0].name);
 }
 
 function setPrice(lot) {}
 
-function getAddress(e) {
+function getAddress(e,area) {
   let post = Number(e.target.value);
   // 桁数チェック
   if (post < 1000000 || 9999999 < post) {
@@ -113,11 +172,11 @@ function getAddress(e) {
       if (json.results === null) {
         return;
       }
-      document.getElementById("customerAddress1").value =
+      document.getElementById(area+"Address1").value =
         json.results[0].address1;
-      document.getElementById("customerAddress2").value =
+      document.getElementById(area+"Address2").value =
         json.results[0].address2;
-      document.getElementById("customerAddress3").value =
+      document.getElementById(area+"Address3").value =
         json.results[0].address3;
     });
 }
