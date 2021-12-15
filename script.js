@@ -234,7 +234,7 @@ function regist() {
       console.log(res)
     });
   document.getElementById("debug").innerText = query;
-  alert("登録完了");
+  alert("データ送信完了");
 }
 
 // 禁則処理
