@@ -103,8 +103,17 @@ function setEvents() {
   document.getElementById("merchandiseLot").addEventListener("change", (e) => {
     changeLot(e.target.value);
   });
+  // 項目別入力欄リセット
+  let areas = ["customer", "delivery", "merchandise", "manager"];
+  for (let i = 0; i < areas.length; i++) {
+    document
+      .getElementById(areas[i] + "Reset")
+      .addEventListener("click", (e) => {
+        formReset(areas[i]);
+      });
+  }
   // 登録
-  document.getElementById("regist").addEventListener("click", (e) => {
+  document.getElementById("registBtn").addEventListener("click", (e) => {
     regist();
   });
 }
@@ -158,7 +167,7 @@ function changeVendor(val, defalt = false) {
       opt.value = MST[i].id;
       opt.innerHTML = MST[i].lot;
       // リスト先頭をとりあえず価格設定
-      if (flag) {
+      if (!flag) {
         document.getElementById("merchandiseVendorPrice").value = MST[i].price;
         flag = true;
       }
@@ -176,6 +185,31 @@ function changeLot(id) {
     if (MST[i].id == id) {
       document.getElementById("merchandiseVendorPrice").value = MST[i].price;
       return;
+    }
+  }
+}
+
+// 項目リセット
+function formReset(id) {
+  let ele = document.getElementById(id + "Area").getElementsByTagName("input");
+  for (let i = 0; i < ele.length; i++) {
+    // 例外処理
+    switch (ele[i].id) {
+      case "merchandiseVendor":
+      case "merchandiseLot":
+      case "merchandiseVendorPrice":
+        break;
+      case "merchandiseQuantity":
+        ele[i].value = 1;
+        break;
+      case "merchandiseDate":
+        let today = new Date();
+        ele[i].value = `${today.getFullYear()}-${
+          today.getMonth() + 1
+        }-${today.getDate()}`;
+        break;
+      default:
+        ele[i].value = "";
     }
   }
 }
@@ -229,10 +263,9 @@ function regist() {
         )}`;
     }
   }
-  fetch(GAS + query)
-    .then(res => {
-      console.log(res)
-    });
+  fetch(GAS + query).then((res) => {
+    console.log(res);
+  });
   document.getElementById("debug").innerText = query;
   alert("データ送信完了");
 }
